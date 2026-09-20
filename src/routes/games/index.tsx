@@ -63,7 +63,7 @@ function CatalogPage() {
   }, [q, verdict, genre, sort]);
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10">
+    <main data-build="receipt-2026-09-20" className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10">
       <section className="receipt-hero">
         <div>
           <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted">
