@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { ArrowRightLeft, BadgeDollarSign, Clock3, Star } from "lucide-react";
 import { PaperReceipt } from "@/components/paper-receipt";
-import { CATALOG, getGame, withMath } from "@/lib/games";
+import { CATALOG, getGame, type GameMath, withMath } from "@/lib/games";
+import { usd } from "@/lib/utils";
 
 type CompareSearch = { a?: string; b?: string };
 
@@ -17,6 +19,8 @@ function ComparePage() {
   const navigate = Route.useNavigate();
   const left = a ? getGame(a) : undefined;
   const right = b ? getGame(b) : undefined;
+  const leftMath = left ? withMath(left) : undefined;
+  const rightMath = right ? withMath(right) : undefined;
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
@@ -41,18 +45,80 @@ function ComparePage() {
       </div>
 
       <div className="mt-8 grid gap-6 lg:grid-cols-2">
-        {left ? (
-          <PaperReceipt game={withMath(left)} />
-        ) : (
-          <EmptySlot label="Choose game A" />
-        )}
-        {right ? (
-          <PaperReceipt game={withMath(right)} />
-        ) : (
-          <EmptySlot label="Choose game B" />
-        )}
+        {leftMath ? <PaperReceipt game={leftMath} /> : <EmptySlot label="Choose game A" />}
+        {rightMath ? <PaperReceipt game={rightMath} /> : <EmptySlot label="Choose game B" />}
       </div>
+
+      {leftMath && rightMath ? <ComparisonNotes left={leftMath} right={rightMath} /> : null}
     </main>
+  );
+}
+
+function ComparisonNotes({ left, right }: { left: GameMath; right: GameMath }) {
+  const valueWinner =
+    left.cph === right.cph ? "It is a tie" : left.cph < right.cph ? left.title : right.title;
+  const timeWinner =
+    left.hoursMain === right.hoursMain
+      ? "It is a tie"
+      : left.hoursMain > right.hoursMain
+        ? left.title
+        : right.title;
+  const scoreWinner =
+    left.quality === right.quality
+      ? "It is a tie"
+      : left.quality > right.quality
+        ? left.title
+        : right.title;
+  return (
+    <section className="mt-8 rounded-[var(--radius-xl)] border border-line bg-surface p-5 sm:p-6">
+      <div className="flex items-center gap-2">
+        <ArrowRightLeft className="size-4 text-muted" />
+        <h2 className="font-display text-2xl tracking-tight">At a glance</h2>
+      </div>
+      <div className="mt-5 grid gap-5 sm:grid-cols-3">
+        <CompareStat
+          icon={<BadgeDollarSign />}
+          label="Better value"
+          winner={valueWinner}
+          detail={`${left.title} ${usd(left.street)} / ${left.hoursMain}h · ${right.title} ${usd(right.street)} / ${right.hoursMain}h`}
+        />
+        <CompareStat
+          icon={<Clock3 />}
+          label="More main-story time"
+          winner={timeWinner}
+          detail={`${left.hoursMain}h vs ${right.hoursMain}h`}
+        />
+        <CompareStat
+          icon={<Star />}
+          label="Higher receipt score"
+          winner={scoreWinner}
+          detail={`${left.quality}/10 vs ${right.quality}/10`}
+        />
+      </div>
+    </section>
+  );
+}
+
+function CompareStat({
+  icon,
+  label,
+  winner,
+  detail,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  winner: string;
+  detail: string;
+}) {
+  return (
+    <div>
+      <div className="flex items-center gap-2 text-faint">
+        {icon}
+        <p className="font-mono text-[10px] uppercase tracking-[0.14em]">{label}</p>
+      </div>
+      <p className="mt-2 font-display text-lg tracking-tight">{winner}</p>
+      <p className="mt-1 text-xs leading-relaxed text-muted">{detail}</p>
+    </div>
   );
 }
 
@@ -69,9 +135,7 @@ function SelectGame({
 }) {
   return (
     <label className="block">
-      <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted">
-        {label}
-      </span>
+      <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted">{label}</span>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
