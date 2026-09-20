@@ -56,7 +56,9 @@ export type Game = {
   cover: CoverTone;
 };
 
-export const GAMES: Game[] = [
+import { EXPANDED_GAMES } from "@/lib/catalog-expansion";
+
+const BASE_GAMES: Game[] = [
   {
     slug: "elden-ring",
     title: "Elden Ring",
@@ -978,6 +980,9 @@ export const GAMES: Game[] = [
     cover: "sand",
   },
 ];
+
+
+export const GAMES: Game[] = [...BASE_GAMES, ...EXPANDED_GAMES];
 
 export function costPerHour(game: Pick<Game, "street" | "hoursMain">) {
   if (game.hoursMain <= 0) return 0;
