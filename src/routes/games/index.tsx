@@ -32,7 +32,10 @@ const SORTS = [
   { id: "value", label: "Best value" },
   { id: "score", label: "Best rated" },
   { id: "price", label: "Lowest price" },
+  { id: "discount", label: "Biggest discount" },
   { id: "time", label: "Longest" },
+  { id: "shortest", label: "Shortest" },
+  { id: "newest", label: "Newest" },
 ] as const;
 
 function CatalogPage() {
@@ -54,7 +57,14 @@ function CatalogPage() {
     return [...filtered].sort((a, b) => {
       if (sort === "score") return b.quality - a.quality || a.cph - b.cph;
       if (sort === "price") return a.street - b.street || a.cph - b.cph;
+      if (sort === "discount") {
+        const aDiscount = a.msrp > 0 ? (a.msrp - a.street) / a.msrp : 0;
+        const bDiscount = b.msrp > 0 ? (b.msrp - b.street) / b.msrp : 0;
+        return bDiscount - aDiscount || a.cph - b.cph;
+      }
       if (sort === "time") return b.hoursMain - a.hoursMain || a.cph - b.cph;
+      if (sort === "shortest") return a.hoursMain - b.hoursMain || a.cph - b.cph;
+      if (sort === "newest") return b.year - a.year || a.cph - b.cph;
       return a.cph - b.cph;
     });
   }, [q, verdict, genre, sort]);
