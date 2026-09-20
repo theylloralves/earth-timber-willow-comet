@@ -18,10 +18,13 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex min-h-dvh flex-col bg-bg text-fg">
-      <header className="sticky top-0 z-40 border-b border-line/80 bg-bg/90 backdrop-blur-sm">
+      <header className="sticky top-0 z-40 border-b border-line/80 bg-bg/90 backdrop-blur-md">
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:h-16 sm:px-6">
-          <Link to="/" className="font-display text-xl tracking-tight">
-            Receipt
+          <Link to="/" className="group flex items-center gap-2">
+            <span className="receipt-logo" aria-hidden="true">
+              $
+            </span>
+            <span className="font-display text-xl tracking-tight">Receipt</span>
           </Link>
           <nav className="hidden items-center gap-1 md:flex">
             {NAV.map((item) => (
@@ -30,7 +33,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
                 to={item.to}
                 className={cn(
                   "rounded-[var(--radius-sm)] px-3 py-2 text-sm text-muted transition-colors duration-[var(--motion-quick)] hover:text-fg",
-                  pathname === item.to && "text-fg",
+                  pathname === item.to && "bg-surface text-fg",
                 )}
               >
                 {item.label}
@@ -57,7 +60,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
                   onClick={() => setOpen(false)}
                   className={cn(
                     "rounded-[var(--radius-sm)] px-2 py-3 text-base text-muted",
-                    pathname === item.to && "text-fg",
+                    pathname === item.to && "bg-surface text-fg",
                   )}
                 >
                   {item.label}
@@ -69,11 +72,15 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
       </header>
       <div className="flex-1">{children}</div>
       <footer className="border-t border-line">
-        <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-8 text-sm text-muted sm:px-6">
-          <p className="font-display text-base text-fg">No faces. No hype. Just the math.</p>
-          <p>
-            Street prices are typical US numbers, not a live store. Hours are typical
-            playthroughs. Buy links go to public search results.
+        <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-9 text-sm text-muted sm:px-6">
+          <div className="flex items-center gap-2 text-fg">
+            <span className="receipt-logo receipt-logo-sm" aria-hidden="true">$</span>
+            <p className="font-display text-base">No faces. No hype. Just the math.</p>
+          </div>
+          <p className="max-w-2xl">
+            Receipt compares US reference prices, playtime and quality in one place.
+            Prices are editorial references, not live store quotes. Cover art is loaded from
+            publicly available Wikipedia thumbnails when available.
           </p>
         </div>
       </footer>
