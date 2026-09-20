@@ -21,9 +21,10 @@ function Home() {
     <main>
       <section className="mx-auto grid max-w-6xl gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14 lg:py-16">
         <div className="stagger-in max-w-xl">
-          <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">
-            PS5 · Cost per hour
-          </p>
+          <div className="flex flex-wrap items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-muted">
+            <span>PS5 · Cost per hour</span>
+            <span className="rounded-full border border-line px-2 py-1">81 titles</span>
+          </div>
           <h1 className="mt-4 font-display text-[2.4rem] leading-[1.05] tracking-[-0.03em] sm:text-5xl">
             A $70 game that lasts 12 hours costs $5.83 an hour.
           </h1>
