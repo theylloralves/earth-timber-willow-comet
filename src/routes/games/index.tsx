@@ -17,15 +17,7 @@ const VERDICTS: { id: Verdict | "all"; label: string }[] = [
 ];
 
 const GENRES: (Genre | "All")[] = [
-  "All",
-  "Action",
-  "RPG",
-  "Soulslike",
-  "Horror",
-  "Adventure",
-  "Shooter",
-  "Platformer",
-  "Co-op",
+  "All", "Action", "RPG", "Soulslike", "Horror", "Adventure", "Shooter", "Platformer", "Co-op",
 ];
 
 const SORTS = [
@@ -43,6 +35,7 @@ function CatalogPage() {
   const [verdict, setVerdict] = useState<Verdict | "all">("all");
   const [genre, setGenre] = useState<Genre | "All">("All");
   const [sort, setSort] = useState<(typeof SORTS)[number]["id"]>("value");
+
   const availableGenres = useMemo(() => {
     const genres = new Set(CATALOG.flatMap((g) => g.genres));
     return ["All", ...GENRES.filter((g) => g !== "All" && genres.has(g))] as (Genre | "All")[];
@@ -70,16 +63,21 @@ function CatalogPage() {
   }, [q, verdict, genre, sort]);
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-      <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted">
-        {CATALOG.length} games
-      </p>
-      <h1 className="mt-2 font-display text-4xl tracking-tight">Catalog</h1>
-      <p className="mt-3 max-w-xl text-muted">
-        Filter by verdict, genre, or name. Prices are typical US street, not a live feed.
-      </p>
+    <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10">
+      <section className="receipt-hero">
+        <div>
+          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted">
+            PS5 / RECEIPT INDEX
+          </p>
+          <h1 className="mt-2 font-display text-4xl tracking-tight sm:text-5xl">The catalog.</h1>
+          <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted sm:text-base">
+            {CATALOG.length} PS5 receipts. Search, filter and sort by the numbers that matter.
+          </p>
+        </div>
+        <div className="receipt-stamp">{CATALOG.length}<span> titles</span></div>
+      </section>
 
-      <div className="mt-8 max-w-md">
+      <div className="mt-7 max-w-xl">
         <Input
           value={q}
           onChange={(e) => setQ(e.target.value)}
@@ -96,9 +94,7 @@ function CatalogPage() {
             onClick={() => setVerdict(v.id)}
             className={cn(
               "min-h-10 rounded-full border px-3 text-sm",
-              verdict === v.id
-                ? "border-fg bg-fg text-ink"
-                : "border-line text-muted hover:text-fg",
+              verdict === v.id ? "border-fg bg-fg text-ink" : "border-line text-muted hover:text-fg",
             )}
           >
             {v.label}
@@ -134,9 +130,7 @@ function CatalogPage() {
             className="h-10 rounded-[var(--radius-sm)] border border-line bg-surface px-3 text-sm text-fg"
           >
             {SORTS.map((item) => (
-              <option key={item.id} value={item.id}>
-                {item.label}
-              </option>
+              <option key={item.id} value={item.id}>{item.label}</option>
             ))}
           </select>
         </label>
@@ -150,9 +144,7 @@ function CatalogPage() {
         <p className="mt-12 text-muted">Nothing matches. Clear a filter.</p>
       ) : (
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {list.map((game) => (
-            <GameCard key={game.slug} game={game} />
-          ))}
+          {list.map((game) => <GameCard key={game.slug} game={game} />)}
         </div>
       )}
     </main>
