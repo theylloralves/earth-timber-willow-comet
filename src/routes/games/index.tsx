@@ -4,6 +4,7 @@ import { GameCard } from "@/components/game-card";
 import { Input } from "@/components/ui/input";
 import { CATALOG, searchGames, type Genre, type Verdict } from "@/lib/games";
 import { cn } from "@/lib/utils";
+import { CATALOG_META } from "@/lib/catalog";
 
 export const Route = createFileRoute("/games/")({ component: CatalogPage });
 
@@ -31,7 +32,10 @@ const SORTS = [
   { id: "value", label: "Best value" },
   { id: "score", label: "Best rated" },
   { id: "price", label: "Lowest price" },
+  { id: "discount", label: "Biggest discount" },
   { id: "time", label: "Longest" },
+  { id: "shortest", label: "Shortest" },
+  { id: "newest", label: "Newest" },
 ] as const;
 
 function CatalogPage() {
@@ -39,6 +43,10 @@ function CatalogPage() {
   const [verdict, setVerdict] = useState<Verdict | "all">("all");
   const [genre, setGenre] = useState<Genre | "All">("All");
   const [sort, setSort] = useState<(typeof SORTS)[number]["id"]>("value");
+  const availableGenres = useMemo(() => {
+    const genres = new Set(CATALOG.flatMap((g) => g.genres));
+    return ["All", ...GENRES.filter((g) => g !== "All" && genres.has(g))] as (Genre | "All")[];
+  }, []);
 
   const list = useMemo(() => {
     const filtered = searchGames(q).filter((g) => {
@@ -49,7 +57,14 @@ function CatalogPage() {
     return [...filtered].sort((a, b) => {
       if (sort === "score") return b.quality - a.quality || a.cph - b.cph;
       if (sort === "price") return a.street - b.street || a.cph - b.cph;
+      if (sort === "discount") {
+        const aDiscount = a.msrp > 0 ? (a.msrp - a.street) / a.msrp : 0;
+        const bDiscount = b.msrp > 0 ? (b.msrp - b.street) / b.msrp : 0;
+        return bDiscount - aDiscount || a.cph - b.cph;
+      }
       if (sort === "time") return b.hoursMain - a.hoursMain || a.cph - b.cph;
+      if (sort === "shortest") return a.hoursMain - b.hoursMain || a.cph - b.cph;
+      if (sort === "newest") return b.year - a.year || a.cph - b.cph;
       return a.cph - b.cph;
     });
   }, [q, verdict, genre, sort]);
@@ -91,7 +106,7 @@ function CatalogPage() {
         ))}
       </div>
       <div className="mt-3 flex flex-wrap gap-2">
-        {GENRES.map((g) => (
+        {availableGenres.map((g) => (
           <button
             key={g}
             type="button"
@@ -127,7 +142,7 @@ function CatalogPage() {
         </label>
       </div>
 
-      {list.length === 0 ? (
+      <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.14em] text-faint">\n        Data: {CATALOG_META.dataMode} · updated {CATALOG_META.lastUpdated}\n      </p>\n\n      {list.length === 0 ? (
         <p className="mt-12 text-muted">Nothing matches. Clear a filter.</p>
       ) : (
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
