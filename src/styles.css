@@ -1,0 +1,217 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fraunces", "Times New Roman", serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --color-bg: #0e0d0c;
+  --color-surface: #161412;
+  --color-paper: #f4efe4;
+  --color-ink: #1c1916;
+  --color-fg: #f4efe4;
+  --color-muted: #a39e94;
+  --color-faint: #6f6a63;
+  --color-line: #2a2723;
+  --color-stamp: #c45c4a;
+  --color-buy: #3f6b4e;
+  --color-wait: #a37b4a;
+  --color-skip: #a33d32;
+  --color-soon: #6e7d8c;
+
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-smooth-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-stagger: 40ms;
+  --motion-micro: 80ms;
+  --motion-quick: 150ms;
+  --motion-fast: 250ms;
+  --motion-slow: 400ms;
+  --motion-y-medium: 12px;
+  --motion-blur-sm: 2px;
+}
+
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: var(--color-bg);
+    color: var(--color-fg);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-bg);
+    color: var(--color-fg);
+    min-height: 100dvh;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+}
+
+.cover-plate {
+  background: linear-gradient(165deg, var(--cover-a), var(--cover-b));
+  color: var(--cover-ink);
+}
+
+.cover-ember {
+  --cover-a: #2a140f;
+  --cover-b: #8a3a28;
+  --cover-ink: #f4efe4;
+}
+.cover-rust {
+  --cover-a: #2b1710;
+  --cover-b: #9a4a2a;
+  --cover-ink: #f4efe4;
+}
+.cover-moss {
+  --cover-a: #142018;
+  --cover-b: #3d5c44;
+  --cover-ink: #f4efe4;
+}
+.cover-sea {
+  --cover-a: #102028;
+  --cover-b: #3a6a78;
+  --cover-ink: #f4efe4;
+}
+.cover-night {
+  --cover-a: #0c0e14;
+  --cover-b: #2a3348;
+  --cover-ink: #f4efe4;
+}
+.cover-bone {
+  --cover-a: #d8d0c2;
+  --cover-b: #8a8174;
+  --cover-ink: #1c1916;
+}
+.cover-wine {
+  --cover-a: #1c1014;
+  --cover-b: #6a2a3a;
+  --cover-ink: #f4efe4;
+}
+.cover-steel {
+  --cover-a: #16181c;
+  --cover-b: #4a5560;
+  --cover-ink: #f4efe4;
+}
+.cover-sand {
+  --cover-a: #cbb896;
+  --cover-b: #7a6244;
+  --cover-ink: #1c1916;
+}
+.cover-frost {
+  --cover-a: #d5dde4;
+  --cover-b: #6a7c8c;
+  --cover-ink: #1c1916;
+}
+.cover-copper {
+  --cover-a: #2a1810;
+  --cover-b: #8a5a32;
+  --cover-ink: #f4efe4;
+}
+.cover-pine {
+  --cover-a: #10241c;
+  --cover-b: #2f6a4e;
+  --cover-ink: #f4efe4;
+}
+.cover-slate {
+  --cover-a: #14181c;
+  --cover-b: #3a4650;
+  --cover-ink: #f4efe4;
+}
+.cover-ash {
+  --cover-a: #1a1a1a;
+  --cover-b: #5a5a58;
+  --cover-ink: #f4efe4;
+}
+.cover-oxblood {
+  --cover-a: #1a0c0c;
+  --cover-b: #6a2424;
+  --cover-ink: #f4efe4;
+}
+.cover-charcoal {
+  --cover-a: #0e0e0e;
+  --cover-b: #2e2e2c;
+  --cover-ink: #f4efe4;
+}
+
+.receipt-paper {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  box-shadow: 0 28px 64px color-mix(in oklab, black 48%, transparent);
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 10px,
+    color-mix(in oklab, var(--color-ink) 7%, transparent) 10px,
+    color-mix(in oklab, var(--color-ink) 7%, transparent) 11px
+  );
+  background-size: 100% 18px;
+  background-repeat: no-repeat;
+  background-position: top;
+}
+
+.hairline {
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--color-ink) 0 4px,
+    transparent 4px 8px
+  );
+  height: 1px;
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--motion-y-medium));
+    filter: blur(var(--motion-blur-sm));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.stagger-in > * {
+  animation: rise-in var(--motion-slow) var(--ease-smooth-out) both;
+}
+.stagger-in > *:nth-child(1) {
+  animation-delay: 0ms;
+}
+.stagger-in > *:nth-child(2) {
+  animation-delay: 80ms;
+}
+.stagger-in > *:nth-child(3) {
+  animation-delay: 140ms;
+}
+.stagger-in > *:nth-child(4) {
+  animation-delay: 200ms;
+}
+.stagger-in > *:nth-child(5) {
+  animation-delay: 260ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stagger-in > * {
+    animation: none;
+  }
+}

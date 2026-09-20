@@ -1,0 +1,38 @@
+{
+  "url": "http://127.0.0.1:8081/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Receipt",
+      "hasCanvas": false,
+      "bodyTextLen": 1606,
+      "bodyTextHash": "6b8576eee26409d344043e42460ee5c35475406c9017d2601b033fd704fb6b29",
+      "bodyTextPrefix": "Receipt Catalog Picks Compare Math Shelf PS5 · COST PER HOUR A $",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Receipt",
+      "hasCanvas": false,
+      "bodyTextLen": 1573,
+      "bodyTextHash": "f75de6367d03bfd739985279aad1f144e991296051f060f65631a3c633a23ccb",
+      "bodyTextPrefix": "Receipt PS5 · COST PER HOUR A $70 game that lasts 12 hours costs",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-built.json",
+  "divergesFromBaseline": false,
+  "baselineReasons": []
+}
