@@ -1,11 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Bookmark, BookmarkCheck } from "lucide-react";
+import { Bookmark, BookmarkCheck, CircleDollarSign, Clock3, Star } from "lucide-react";
 import { BuyLinks } from "@/components/buy-links";
 import { GameCard } from "@/components/game-card";
 import { PaperReceipt } from "@/components/paper-receipt";
 import { Button } from "@/components/ui/button";
 import { CATALOG, getGame, withMath } from "@/lib/games";
 import { useShelf } from "@/lib/shelf";
+import { usd } from "@/lib/utils";
 
 export const Route = createFileRoute("/games/$slug")({ component: GamePage });
 
@@ -27,8 +28,7 @@ function GamePage() {
 
   const game = withMath(raw);
   const related = CATALOG.filter(
-    (g) =>
-      g.slug !== game.slug && g.genres.some((genre) => game.genres.includes(genre)),
+    (g) => g.slug !== game.slug && g.genres.some((genre) => game.genres.includes(genre)),
   ).slice(0, 3);
   const saved = shelf.has(game.slug);
 
@@ -47,18 +47,46 @@ function GamePage() {
           <Stat k="Year" v={String(game.year)} />
         </dl>
 
+        <section className="mt-8 rounded-[var(--radius-lg)] border border-line bg-surface p-5">
+          <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted">
+            Purchase guide
+          </p>
+          <div className="mt-4 grid gap-4 sm:grid-cols-3">
+            <GuideMetric
+              icon={<CircleDollarSign />}
+              label="Fair price"
+              value={usd(game.fairPrice)}
+              detail={
+                game.priceDelta <= 0
+                  ? "At or below our target"
+                  : `${usd(game.priceDelta)} above target`
+              }
+            />
+            <GuideMetric
+              icon={<Clock3 />}
+              label="Main story"
+              value={`${game.hoursMain}h`}
+              detail={`${game.hoursExtra}h with extras`}
+            />
+            <GuideMetric
+              icon={<Star />}
+              label="Receipt score"
+              value={`${game.quality}/10`}
+              detail={
+                game.estimated ? "Estimate — not a review" : "Overall quality, not user score"
+              }
+            />
+          </div>
+          <p className="mt-5 border-t border-line pt-4 text-sm leading-relaxed text-muted">
+            Target price is a practical ceiling based on main-story time and our quality score. It
+            is not a live deal alert or a promise of availability.
+          </p>
+        </section>
+
         <div className="mt-8 flex flex-col gap-3">
           <BuyLinks title={game.title} />
-          <Button
-            variant="ghost"
-            onClick={() => shelf.toggle(game.slug)}
-            className="w-full"
-          >
-            {saved ? (
-              <BookmarkCheck className="size-4" />
-            ) : (
-              <Bookmark className="size-4" />
-            )}
+          <Button variant="ghost" onClick={() => shelf.toggle(game.slug)} className="w-full">
+            {saved ? <BookmarkCheck className="size-4" /> : <Bookmark className="size-4" />}
             {saved ? "On your shelf" : "Save to shelf"}
           </Button>
         </div>
@@ -85,6 +113,29 @@ function Stat({ k, v }: { k: string; v: string }) {
     <div className="rounded-[var(--radius-md)] border border-line bg-surface px-4 py-3">
       <dt className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">{k}</dt>
       <dd className="mt-1 font-display text-xl tracking-tight">{v}</dd>
+    </div>
+  );
+}
+
+function GuideMetric({
+  icon,
+  label,
+  value,
+  detail,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+  detail: string;
+}) {
+  return (
+    <div>
+      <div className="flex items-center gap-2 text-faint">
+        {icon}
+        <p className="font-mono text-[10px] uppercase tracking-[0.14em]">{label}</p>
+      </div>
+      <p className="mt-2 font-display text-2xl tracking-tight">{value}</p>
+      <p className="mt-1 text-xs leading-relaxed text-muted">{detail}</p>
     </div>
   );
 }

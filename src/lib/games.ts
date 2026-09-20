@@ -985,6 +985,15 @@ export function costPerHour(game: Pick<Game, "street" | "hoursMain">) {
   return game.street / game.hoursMain;
 }
 
+export function fairPriceFor(game: Pick<Game, "hoursMain" | "quality">, targetCph?: number) {
+  const sensibleRate = targetCph ?? (game.quality >= 9 ? 3.5 : game.quality >= 8 ? 2.75 : 2);
+  return Math.round((game.hoursMain * sensibleRate) / 5) * 5;
+}
+
+export function priceDelta(game: Pick<Game, "street" | "hoursMain" | "quality">) {
+  return game.street - fairPriceFor(game);
+}
+
 export function verdictOf(game: Game): Verdict {
   if (game.comingSoon) return "soon";
   const cph = costPerHour(game);
@@ -1007,6 +1016,8 @@ export function withMath<T extends Game>(game: T) {
   return {
     ...game,
     cph: costPerHour(game),
+    fairPrice: fairPriceFor(game),
+    priceDelta: priceDelta(game),
     verdict: verdictOf(game),
     discounted: game.msrp > 0 && game.street <= game.msrp * 0.65,
   };
@@ -1029,10 +1040,7 @@ export function searchGames(q: string, list = CATALOG) {
   });
 }
 
-export const VERDICT_COPY: Record<
-  Verdict,
-  { label: string; line: string }
-> = {
+export const VERDICT_COPY: Record<Verdict, { label: string; line: string }> = {
   buy: { label: "BUY", line: "The hours justify the tag." },
   wait: { label: "WAIT", line: "A sale will fix this receipt." },
   skip: { label: "SKIP", line: "Pay this and you're buying the box, not the hours." },

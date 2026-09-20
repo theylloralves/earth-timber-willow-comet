@@ -27,18 +27,32 @@ const GENRES: (Genre | "All")[] = [
   "Co-op",
 ];
 
+const SORTS = [
+  { id: "value", label: "Best value" },
+  { id: "score", label: "Best rated" },
+  { id: "price", label: "Lowest price" },
+  { id: "time", label: "Longest" },
+] as const;
+
 function CatalogPage() {
   const [q, setQ] = useState("");
   const [verdict, setVerdict] = useState<Verdict | "all">("all");
   const [genre, setGenre] = useState<Genre | "All">("All");
+  const [sort, setSort] = useState<(typeof SORTS)[number]["id"]>("value");
 
   const list = useMemo(() => {
-    return searchGames(q).filter((g) => {
+    const filtered = searchGames(q).filter((g) => {
       if (verdict !== "all" && g.verdict !== verdict) return false;
       if (genre !== "All" && !g.genres.includes(genre)) return false;
       return true;
     });
-  }, [q, verdict, genre]);
+    return [...filtered].sort((a, b) => {
+      if (sort === "score") return b.quality - a.quality || a.cph - b.cph;
+      if (sort === "price") return a.street - b.street || a.cph - b.cph;
+      if (sort === "time") return b.hoursMain - a.hoursMain || a.cph - b.cph;
+      return a.cph - b.cph;
+    });
+  }, [q, verdict, genre, sort]);
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
@@ -84,14 +98,33 @@ function CatalogPage() {
             onClick={() => setGenre(g)}
             className={cn(
               "min-h-10 rounded-full border px-3 text-sm",
-              genre === g
-                ? "border-fg bg-fg text-ink"
-                : "border-line text-muted hover:text-fg",
+              genre === g ? "border-fg bg-fg text-ink" : "border-line text-muted hover:text-fg",
             )}
           >
             {g}
           </button>
         ))}
+      </div>
+
+      <div className="mt-8 flex flex-col gap-3 border-y border-line py-4 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-sm text-muted">
+          <span className="font-medium text-fg">{list.length}</span>{" "}
+          {list.length === 1 ? "receipt" : "receipts"} shown
+        </p>
+        <label className="flex items-center gap-3 text-sm text-muted">
+          Sort by
+          <select
+            value={sort}
+            onChange={(e) => setSort(e.target.value as typeof sort)}
+            className="h-10 rounded-[var(--radius-sm)] border border-line bg-surface px-3 text-sm text-fg"
+          >
+            {SORTS.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.label}
+              </option>
+            ))}
+          </select>
+        </label>
       </div>
 
       {list.length === 0 ? (
