@@ -19,7 +19,7 @@ function Home() {
       <section className="border-b border-line">
         <div className="mx-auto grid max-w-6xl gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14 lg:py-16">
           <div className="stagger-in max-w-xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-muted"><Sparkles className="size-3" /> PS5 price reality check</div>
+            <div className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-muted"><Sparkles className="size-3" /> PS5 PRICE REALITY CHECK</div>
             <h1 className="mt-5 font-display text-[2.65rem] leading-[1.02] tracking-[-0.035em] sm:text-6xl">What is this game really costing you?</h1>
             <p className="mt-5 text-base leading-relaxed text-muted sm:text-lg">Receipt turns price and playtime into one simple number: cost per hour. Compare games without hype, faces, or influencer noise.</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
