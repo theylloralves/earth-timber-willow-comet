@@ -6,7 +6,7 @@ export const CATALOG_META = {
   lastUpdated: "2026-09-20",
   priceNote: "US street prices are editorial reference values, not live store quotes.",
   updateReady: true,
-  catalogSize: 81,
+  provider: "optional-remote-json",
 } as const;
 
 export type CatalogMeta = typeof CATALOG_META;
