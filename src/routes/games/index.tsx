@@ -142,7 +142,11 @@ function CatalogPage() {
         </label>
       </div>
 
-      <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.14em] text-faint">\n        Data: {CATALOG_META.dataMode} · updated {CATALOG_META.lastUpdated}\n      </p>\n\n      {list.length === 0 ? (
+      <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.14em] text-faint">
+        Data: {CATALOG_META.dataMode} · updated {CATALOG_META.lastUpdated}
+      </p>
+
+      {list.length === 0 ? (
         <p className="mt-12 text-muted">Nothing matches. Clear a filter.</p>
       ) : (
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
