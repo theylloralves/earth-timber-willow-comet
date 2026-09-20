@@ -4,6 +4,7 @@ import { GameCard } from "@/components/game-card";
 import { Input } from "@/components/ui/input";
 import { CATALOG, searchGames, type Genre, type Verdict } from "@/lib/games";
 import { cn } from "@/lib/utils";
+import { CATALOG_META } from "@/lib/catalog";
 
 export const Route = createFileRoute("/games/")({ component: CatalogPage });
 
@@ -39,6 +40,10 @@ function CatalogPage() {
   const [verdict, setVerdict] = useState<Verdict | "all">("all");
   const [genre, setGenre] = useState<Genre | "All">("All");
   const [sort, setSort] = useState<(typeof SORTS)[number]["id"]>("value");
+  const availableGenres = useMemo(() => {
+    const genres = new Set(CATALOG.flatMap((g) => g.genres));
+    return ["All", ...GENRES.filter((g) => g !== "All" && genres.has(g))] as (Genre | "All")[];
+  }, []);
 
   const list = useMemo(() => {
     const filtered = searchGames(q).filter((g) => {
@@ -91,7 +96,7 @@ function CatalogPage() {
         ))}
       </div>
       <div className="mt-3 flex flex-wrap gap-2">
-        {GENRES.map((g) => (
+        {availableGenres.map((g) => (
           <button
             key={g}
             type="button"
@@ -127,7 +132,7 @@ function CatalogPage() {
         </label>
       </div>
 
-      {list.length === 0 ? (
+      <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.14em] text-faint">\n        Data: {CATALOG_META.dataMode} · updated {CATALOG_META.lastUpdated}\n      </p>\n\n      {list.length === 0 ? (
         <p className="mt-12 text-muted">Nothing matches. Clear a filter.</p>
       ) : (
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
