@@ -215,3 +215,67 @@
     animation: none;
   }
 }
+
+
+@layer components {
+  .receipt-logo {
+    display: inline-flex;
+    width: 30px;
+    height: 30px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-line);
+    border-radius: 6px;
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    box-shadow: 2px 2px 0 var(--color-line);
+  }
+  .receipt-logo-sm {
+    width: 24px;
+    height: 24px;
+    font-size: 10px;
+    box-shadow: 1px 1px 0 var(--color-line);
+  }
+  .receipt-chip {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid rgb(255 255 255 / 30%);
+    border-radius: 999px;
+    padding: 4px 7px;
+    background: rgb(0 0 0 / 25%);
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+  }
+  .receipt-hero {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 24px;
+    border-bottom: 1px dashed var(--color-line);
+    padding: 10px 0 22px;
+  }
+  .receipt-stamp {
+    flex: 0 0 auto;
+    border: 1px solid var(--color-stamp);
+    border-radius: 999px;
+    padding: 10px 14px;
+    color: var(--color-stamp);
+    font-family: var(--font-mono);
+    font-size: 22px;
+    line-height: 1;
+    transform: rotate(-3deg);
+  }
+  .receipt-stamp span {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  @media (max-width: 640px) {
+    .receipt-hero { align-items: start; }
+    .receipt-stamp { font-size: 17px; padding: 8px 10px; }
+  }
+}
